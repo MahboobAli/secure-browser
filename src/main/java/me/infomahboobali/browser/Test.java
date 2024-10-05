@@ -13,10 +13,10 @@ import java.util.Scanner;
 class Test {
     private static final String testUrl = "https://www.scaler.com/users/sign_in/";
     public static void main(String[] args) throws IOException, ReflectiveOperationException, InterruptedException {
-        //test1();
+        test1();
        // test2();
-       // test3();
-        cloudflareTest();
+        //test3();
+        //cloudflareTest();
     }
     public static void w() {
         Scanner scanner = new Scanner(System.in);
@@ -27,8 +27,16 @@ class Test {
     }
     public static void test1() throws IOException, ReflectiveOperationException, InterruptedException {
         // UC, driverFromCFT currently defaults to false (which only allows versions <= 113)
+       // UndetectedChromeDriver driver = UndetectedChromeDriver.builder().build();
+        boolean headless = false;
+
         UndetectedChromeDriver driver = UndetectedChromeDriver.builder()
-                .build();
+                .pageLoadStrategy(PageLoadStrategy.NONE)
+                .headless(headless)
+                .driverFromCFT(true)
+                .versionMain(129)
+                .autoOpenDevtools(true)
+                .seleniumStealth(SeleniumStealthOptions.getDefault()).build();
 
         driver.cloudflareGet(testUrl);
         WebElement userId = driver.findElement(By.xpath("//input[@placeholder='Enter your email']"));
@@ -36,11 +44,11 @@ class Test {
         WebElement loginButton = driver.findElement(By.xpath("(//button[normalize-space()='Login'])[1]"));
 
 
-        Thread.sleep(2000);
-        userId.sendKeys("techprakashmaurya@gmail.com");
-        Thread.sleep(2000);
-        password.sendKeys("Nitya@1990");
         Thread.sleep(3000);
+        userId.sendKeys("techprakashmaurya@gmail.com");
+        Thread.sleep(3000);
+        password.sendKeys("Nitya@1990");
+        Thread.sleep(10000);
         loginButton.click();
 
         w();
